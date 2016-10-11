@@ -21,6 +21,7 @@ class MovieDetailViewController: UIViewController {
     
     var movie: Movie!
     let highPosterUrlString = "https://image.tmdb.org/t/p/original"
+    let lowPosterUrlString = "https://image.tmdb.org/t/p/w45"
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,6 +35,9 @@ class MovieDetailViewController: UIViewController {
             self.overviewLabel.text = overview
         }
         if let posterPath = movie.posterPath {
+            // load low image first
+            self.posterImageView.setImageWith(URL(string: lowPosterUrlString + posterPath)!)
+            // load high image to change low image
             self.posterImageView.setImageWith(URL(string: highPosterUrlString + posterPath)!)
         }
         if let dateRelease = movie.releaseDate {
