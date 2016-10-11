@@ -10,7 +10,7 @@ import UIKit
 import AFNetworking
 import MBProgressHUD
 
-class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource, UISearchBarDelegate {
+class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UISearchBarDelegate {
 
     @IBOutlet weak var pageControl: UIPageControl!
     @IBOutlet weak var movieCollectionView: UICollectionView!
@@ -25,11 +25,17 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
+        // set page control (page 1 is init page)
+        self.pageControl.currentPage = 1
+        
         // Initialize a UIRefreshControl
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: #selector(refreshControlAction(refreshControl:)), for: UIControlEvents.valueChanged)
         // add refresh control to table view
         movieTableView.insertSubview(refreshControl, at: 0)
+        // add refresh control to collection view
+        movieCollectionView.insertSubview(refreshControl, at: 0)
         
         // if device cannot connect network
         if Reachability.isConnectedToNetwork() == false {
@@ -70,11 +76,17 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
     @IBAction func showTableView(_ sender: AnyObject) {
         self.movieCollectionView.isHidden = true
         self.movieTableView.isHidden = false
+        
+        // set page control
+        self.pageControl.currentPage = 1
     }
     
     @IBAction func showCollectionView(_ sender: AnyObject) {
         self.movieCollectionView.isHidden = false
         self.movieTableView.isHidden = true
+        
+        // set page control
+        self.pageControl.currentPage = 0
     }
     
     // MARK - implement search bar delegate
@@ -94,9 +106,8 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         }
         
         self.movieTableView.reloadData()
+        self.movieCollectionView.reloadData()
     }
-    
-    //func searchBar(_ searchBar: UISearchBar, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool // called before text changes
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         searchBar.showsCancelButton = false
@@ -133,14 +144,14 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
                     
                     // imageResponse will be nil if the image is cached
                     if imageResponse != nil {
-                        print("Image was NOT cached, fade in image")
+                        //print("Image was NOT cached, fade in image")
                         cell.posterImageView.alpha = 0.0
                         cell.posterImageView.image = image
                         UIView.animate(withDuration: 0.3, animations: { () -> Void in
                             cell.posterImageView.alpha = 1.0
                         })
                     } else {
-                        print("Image was cached so just update the image")
+                        //print("Image was cached so just update the image")
                         cell.posterImageView.image = image
                     }
                 },
@@ -152,13 +163,15 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         return cell
     }
     
-//    private func collectionView(collectionView: UICollectionView,
-//                        layout collectionViewLayout: UICollectionViewLayout,
-//                        sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-//        
-//        let size = self.view.bounds.width / 2
-//        return CGSize(width: size, height: size)
-//    }
+    // MARK - implement method UICollectionViewDelegateFlowLayout
+    
+    // change size of cell
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let width = (self.view.bounds.width - 5) / 2
+        let height = width * 1.5
+        return CGSize(width: width, height: height)
+    }
+    
     
     // MARK - implement table delegate function
     
@@ -190,14 +203,14 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
                     
                     // imageResponse will be nil if the image is cached
                     if imageResponse != nil {
-                        print("Image was NOT cached, fade in image")
+                        //print("Image was NOT cached, fade in image")
                         cell.posterImageView.alpha = 0.0
                         cell.posterImageView.image = image
                         UIView.animate(withDuration: 0.3, animations: { () -> Void in
                             cell.posterImageView.alpha = 1.0
                         })
                     } else {
-                        print("Image was cached so just update the image")
+                        //print("Image was cached so just update the image")
                         cell.posterImageView.image = image
                     }
                 },
@@ -218,7 +231,13 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let movieDetailViewController = segue.destination as! MovieDetailViewController
         
-        let indexMovie = movieTableView.indexPathForSelectedRow
+        var indexMovie: IndexPath!
+        if segue.identifier == "showDetailMovieFromCollectionView" {
+            indexMovie = movieCollectionView.indexPathsForSelectedItems?[0]
+        }
+        if segue.identifier == "showDetailMovieFromTableView" {
+            indexMovie = movieTableView.indexPathForSelectedRow
+        }
         movieDetailViewController.movie = moviesSearchArray[(indexMovie?.row)!]
         
         // hide keyboard of search bar
@@ -274,7 +293,6 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
                                     if let responseDictionary = try! JSONSerialization.jsonObject(
                                         with: data, options:[]) as? NSDictionary {
                                         let moviesDictionary = responseDictionary["results"] as! [NSDictionary]
-                                        //print("response: \(self.moviesDictionary)")
                                         self.parseDataFrom(moviesDictionary: moviesDictionary)
                                         
                                         // reload table view

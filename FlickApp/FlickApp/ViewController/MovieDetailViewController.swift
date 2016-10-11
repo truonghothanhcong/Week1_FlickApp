@@ -26,7 +26,8 @@ class MovieDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        // set color for back item
+        self.navigationController?.navigationBar.tintColor = UIColor.black
         
         if let originalTitle = movie.originalTitle {
             self.titleLabel.text = originalTitle
