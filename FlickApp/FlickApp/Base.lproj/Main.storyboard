@@ -20,13 +20,13 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="139" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="u1p-j6-Pka">
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" red="0.94117647059999998" green="0.69803921570000005" blue="0.30980392159999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="movieCell" rowHeight="139" id="33G-FL-VFL" customClass="MovieTableViewCell" customModule="FlickApp" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="375" height="139"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="33G-FL-VFL" id="XGp-SB-XFf">
-                                            <frame key="frameInset" width="375" height="138.5"/>
+                                            <frame key="frameInset" width="375" height="138"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="2Xg-Xc-BpC">
@@ -71,11 +71,37 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
+                            <view hidden="YES" alpha="0.80000000000000004" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CMV-Ry-bxf">
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="warning_icon" translatesAutoresizingMaskIntoConstraints="NO" id="cDh-Oo-7vF">
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="24" id="MaG-Wt-Oxj"/>
+                                            <constraint firstAttribute="width" secondItem="cDh-Oo-7vF" secondAttribute="height" multiplier="1:1" id="vCX-dQ-6cc"/>
+                                        </constraints>
+                                    </imageView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Network Error" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0Oc-Zu-eMF">
+                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="cDh-Oo-7vF" firstAttribute="centerX" secondItem="CMV-Ry-bxf" secondAttribute="centerX" constant="-50" id="2i6-1E-75g"/>
+                                    <constraint firstAttribute="height" constant="40" id="O18-bq-L1u"/>
+                                    <constraint firstItem="0Oc-Zu-eMF" firstAttribute="centerY" secondItem="cDh-Oo-7vF" secondAttribute="centerY" id="R2R-vu-ECx"/>
+                                    <constraint firstItem="0Oc-Zu-eMF" firstAttribute="leading" secondItem="cDh-Oo-7vF" secondAttribute="trailing" constant="5" id="StX-Ha-iQV"/>
+                                    <constraint firstItem="cDh-Oo-7vF" firstAttribute="centerY" secondItem="CMV-Ry-bxf" secondAttribute="centerY" id="v0G-Da-8TP"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="CMV-Ry-bxf" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="3No-Ww-uaY"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="u1p-j6-Pka" secondAttribute="bottom" id="FQB-8T-18m"/>
+                            <constraint firstAttribute="trailing" secondItem="CMV-Ry-bxf" secondAttribute="trailing" id="LiU-lm-cL4"/>
                             <constraint firstAttribute="trailing" secondItem="u1p-j6-Pka" secondAttribute="trailing" id="atd-Gi-XEA"/>
+                            <constraint firstItem="CMV-Ry-bxf" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="bCO-3L-OtG"/>
                             <constraint firstItem="u1p-j6-Pka" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="f0w-Qx-i7N"/>
                             <constraint firstItem="u1p-j6-Pka" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="kgb-bd-RpR"/>
                         </constraints>
@@ -83,6 +109,7 @@
                     <navigationItem key="navigationItem" id="elG-mw-Zq0"/>
                     <connections>
                         <outlet property="movieTableView" destination="u1p-j6-Pka" id="SE8-Lf-Fla"/>
+                        <outlet property="networkErrorView" destination="CMV-Ry-bxf" id="alC-5a-4kx"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -235,7 +262,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="TlI-Ba-6Tb" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Item" id="bC6-5G-m35"/>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="1Xe-zf-uDe">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="1Xe-zf-uDe">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="barTintColor" red="0.94117647058823528" green="0.72941176470588232" blue="0.40392156862745099" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -253,5 +280,6 @@
     <resources>
         <image name="alarm_icon" width="120" height="120"/>
         <image name="crown_icon" width="120" height="120"/>
+        <image name="warning_icon" width="120" height="120"/>
     </resources>
 </document>
