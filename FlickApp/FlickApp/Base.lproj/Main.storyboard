@@ -208,7 +208,7 @@
                     </connections>
                 </swipeGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="2015.2" y="138.98050974512745"/>
+            <point key="canvasLocation" x="1361" y="139"/>
         </scene>
         <!--Movie Detail View Controller-->
         <scene sceneID="c9y-p7-rzD">
@@ -329,12 +329,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="i7s-hb-TZr" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2756" y="138.98050974512745"/>
+            <point key="canvasLocation" x="2137" y="139"/>
         </scene>
-        <!--Tab Bar Controller-->
+        <!--Tab Bar View Controller-->
         <scene sceneID="Bv1-Yb-Fbm">
             <objects>
-                <tabBarController automaticallyAdjustsScrollViewInsets="NO" id="srt-Zb-gde" sceneMemberID="viewController">
+                <tabBarController automaticallyAdjustsScrollViewInsets="NO" id="srt-Zb-gde" customClass="TabBarViewController" customModule="FlickApp" customModuleProvider="target" sceneMemberID="viewController">
                     <toolbarItems/>
                     <tabBar key="tabBar" contentMode="scaleToFill" id="hNb-Ep-aYe">
                         <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
@@ -345,11 +345,12 @@
                     </tabBar>
                     <connections>
                         <segue destination="TlI-Ba-6Tb" kind="relationship" relationship="viewControllers" id="HFB-Br-g2I"/>
+                        <segue destination="2xU-d9-faj" kind="relationship" relationship="viewControllers" id="CxM-Hp-cgn"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kRp-0y-85L" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="136.80000000000001" y="138.98050974512745"/>
+            <point key="canvasLocation" x="-398" y="139"/>
         </scene>
         <!--Now Playing-->
         <scene sceneID="yUe-Og-Ios">
@@ -361,9 +362,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="barTintColor" red="0.94117647058823528" green="0.72941176470588232" blue="0.40392156862745099" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <textAttributes key="titleTextAttributes">
-                            <color key="textShadowColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                        </textAttributes>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
@@ -372,16 +370,38 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="CH0-Nb-SC9" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1076" y="138.98050974512745"/>
+            <point key="canvasLocation" x="521" y="-173"/>
+        </scene>
+        <!--Top Rate-->
+        <scene sceneID="HoQ-jD-hjT">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="2xU-d9-faj" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Top Rate" image="star_icon" id="9b0-fC-fam"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="nek-qo-eHw">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="barTintColor" red="0.94117647059999998" green="0.72941176470000002" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="JJN-He-wgL"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="9bA-Yg-g1N" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="521" y="545"/>
         </scene>
     </scenes>
     <resources>
         <image name="alarm_icon" width="120" height="120"/>
         <image name="crown_icon" width="120" height="120"/>
         <image name="now_playing_icon" width="120" height="120"/>
+        <image name="star_icon" width="120" height="120"/>
         <image name="warning_icon" width="120" height="120"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="nnQ-a2-RDo"/>
+        <segue reference="JJN-He-wgL"/>
+        <segue reference="GvI-W4-ETL"/>
     </inferredMetricsTieBreakers>
 </document>

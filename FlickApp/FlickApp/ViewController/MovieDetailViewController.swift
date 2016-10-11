@@ -9,6 +9,7 @@
 import UIKit
 import AFNetworking
 
+
 class MovieDetailViewController: UIViewController {
 
     @IBOutlet weak var posterImageView: UIImageView!
@@ -20,8 +21,6 @@ class MovieDetailViewController: UIViewController {
     @IBOutlet weak var overviewLabel: UILabel!
     
     var movie: Movie!
-    let highPosterUrlString = "https://image.tmdb.org/t/p/original"
-    let lowPosterUrlString = "https://image.tmdb.org/t/p/w45"
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,12 +36,17 @@ class MovieDetailViewController: UIViewController {
         }
         if let posterPath = movie.posterPath {
             // load low image first
-            self.posterImageView.setImageWith(URL(string: lowPosterUrlString + posterPath)!)
+            self.posterImageView.setImageWith(URL(string: Global.lowPosterUrlString + posterPath)!)
             // load high image to change low image
-            self.posterImageView.setImageWith(URL(string: highPosterUrlString + posterPath)!)
+            self.posterImageView.setImageWith(URL(string: Global.highPosterUrlString + posterPath)!)
         }
         if let dateRelease = movie.releaseDate {
-            self.dateLabel.text = dateRelease
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyy-MM-dd"
+            let date = dateFormatter.date(from: dateRelease)
+            dateFormatter.dateStyle = DateFormatter.Style.long
+            
+            self.dateLabel.text = dateFormatter.string(from: date!)
         }
     }
 

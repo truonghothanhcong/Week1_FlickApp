@@ -20,7 +20,6 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     var moviesArray = [Movie]()
     var moviesSearchArray = [Movie]()
-    let lowPosterUrlString = "https://image.tmdb.org/t/p/w342"
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -131,7 +130,7 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
             cell.overviewLabel.text = overview
         }
         if let posterPath = moviesSearchArray[indexPath.row].posterPath {
-            let posterUrl = lowPosterUrlString + posterPath
+            let posterUrl = Global.mediumPosterUrlString + posterPath
             //            cell.posterImageView.setImageWith(URL(string: posterUrl)!)
             let imageRequest = URLRequest(
                 url: URL(string: posterUrl)!,
@@ -190,8 +189,7 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
             cell.overviewLabel.text = overview
         }
         if let posterPath = moviesSearchArray[indexPath.row].posterPath {
-            let posterUrl = lowPosterUrlString + posterPath
-//            cell.posterImageView.setImageWith(URL(string: posterUrl)!)
+            let posterUrl = Global.mediumPosterUrlString + posterPath
             let imageRequest = URLRequest(
                 url: URL(string: posterUrl)!,
                 cachePolicy: NSURLRequest.CachePolicy.reloadIgnoringLocalCacheData,
@@ -273,8 +271,7 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     func loadDataFrom(handleStopProcess: (() -> ())?) {
         // create url for load data
-        let moviesApiKey = "a07e22bc18f5cb106bfe4cc1f83ad8ed"
-        let url = URL(string: "https://api.themoviedb.org/3/movie/now_playing?api_key=\(moviesApiKey)")
+        let url = URL(string: Global.prefixUrlStringRequest + Global.moviesApiKey)
         
         // load data from server
         let request = URLRequest(
