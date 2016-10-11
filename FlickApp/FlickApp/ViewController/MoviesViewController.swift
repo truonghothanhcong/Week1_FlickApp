@@ -20,10 +20,14 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     var moviesArray = [Movie]()
     var moviesSearchArray = [Movie]()
+    var currentPage = 1
+    var isLoading: Bool!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.currentPage = 1
+        self.isLoading = false
         
         // set page control (page 1 is init page)
         self.pageControl.currentPage = 1
@@ -88,7 +92,7 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         self.pageControl.currentPage = 0
     }
     
-    // MARK - implement search bar delegate
+    // MARK: - implement search bar delegate
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         searchBar.showsCancelButton = true
@@ -113,7 +117,7 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         searchBar.resignFirstResponder()
     }
     
-    // MARK - implement collection delegate function
+    // MARK: - implement collection delegate function
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return moviesSearchArray.count
@@ -162,7 +166,7 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         return cell
     }
     
-    // MARK - implement method UICollectionViewDelegateFlowLayout
+    // MARK: - implement method UICollectionViewDelegateFlowLayout
     
     // change size of cell
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -172,7 +176,7 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     
-    // MARK - implement table delegate function
+    // MARK: - implement table delegate function
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return moviesSearchArray.count
@@ -222,6 +226,13 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         return cell
     }
     
+    // load next page
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if indexPath.row > (moviesArray.count - 5) && isLoading == false {
+            self.currentPage += 1
+            self.loadDataFrom(handleStopProcess: nil)
+        }
+    }
 
     // MARK: - Navigation
 
@@ -242,7 +253,7 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         searchBar.resignFirstResponder()
     }
     
-    // MARK - refreshControl
+    // MARK: - refreshControl
     
     // Makes a network request to get updated data
     // Updates the tableView with the new data
@@ -258,6 +269,9 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
             networkErrorView.isHidden = true;
         }
         
+        // reset current page
+        self.currentPage = 1
+        
         let handleProcessControl = { () -> () in
             // Tell the refreshControl to stop spinning
             refreshControl.endRefreshing()
@@ -270,8 +284,10 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
     // MARK: - private method
     
     func loadDataFrom(handleStopProcess: (() -> ())?) {
+        self.isLoading = true
+        
         // create url for load data
-        let url = URL(string: Global.prefixUrlStringRequest + Global.moviesApiKey)
+        let url = URL(string: "\(Global.prefixUrlStringRequest + Global.moviesApiKey)&page=\(self.currentPage)")
         
         // load data from server
         let request = URLRequest(
@@ -303,6 +319,8 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
                                         if handleStopProcess != nil {
                                             handleStopProcess!()
                                         }
+                                        
+                                        self.isLoading = false
                                     }
                                 }
             })
@@ -320,9 +338,9 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
             // create object and add to array movies
             let movie = Movie(posterUrlPath: posterPath, originalTitle: originalTitle, overview: overview, releaseDate: releaseDate)
             self.moviesArray.append(movie)
-            self.moviesSearchArray.append(movie)
         }
         
+        self.moviesSearchArray = self.moviesArray
     }
     
 }
