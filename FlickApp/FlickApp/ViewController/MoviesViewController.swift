@@ -274,6 +274,8 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         
         // reset current page
         self.currentPage = 1
+        // reset movies array
+        self.moviesArray = []
         
         let handleProcessControl = { () -> () in
             // Tell the refreshControl to stop spinning
@@ -310,7 +312,7 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
                                         with: data, options:[]) as? NSDictionary {
                                         let moviesDictionary = responseDictionary["results"] as! [NSDictionary]
                                         self.parseDataFrom(moviesDictionary: moviesDictionary)
-                                        
+                                        //print("aaaa\(self.moviesSearchArray)")
                                         // reload table view
                                         self.movieTableView.reloadData()
                                         self.movieCollectionView.reloadData()
