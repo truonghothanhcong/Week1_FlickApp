@@ -33,12 +33,15 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         self.pageControl.currentPage = 1
         
         // Initialize a UIRefreshControl
-        let refreshControl = UIRefreshControl()
-        refreshControl.addTarget(self, action: #selector(refreshControlAction(refreshControl:)), for: UIControlEvents.valueChanged)
+        let refreshControlCollection = UIRefreshControl()
+        refreshControlCollection.addTarget(self, action: #selector(refreshControlAction(refreshControl:)), for: UIControlEvents.valueChanged)
+        let refreshControlTable = UIRefreshControl()
+        refreshControlTable.addTarget(self, action: #selector(refreshControlAction(refreshControl:)), for: UIControlEvents.valueChanged)
+        
         // add refresh control to table view
-        movieTableView.insertSubview(refreshControl, at: 0)
+        movieTableView.insertSubview(refreshControlTable, at: 0)
         // add refresh control to collection view
-        movieCollectionView.insertSubview(refreshControl, at: 0)
+        movieCollectionView.insertSubview(refreshControlCollection, at: 0)
         
         // if device cannot connect network
         if Reachability.isConnectedToNetwork() == false {
