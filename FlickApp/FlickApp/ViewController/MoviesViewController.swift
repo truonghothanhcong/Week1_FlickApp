@@ -178,6 +178,12 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         return CGSize(width: width, height: height)
     }
     
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        if indexPath.row > (moviesArray.count - 5) && isLoading == false {
+            self.currentPage += 1
+            self.loadDataFrom(handleStopProcess: nil)
+        }
+    }
     
     // MARK: - implement table delegate function
     
