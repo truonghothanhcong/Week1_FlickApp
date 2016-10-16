@@ -10,7 +10,7 @@ import UIKit
 import AFNetworking
 import MBProgressHUD
 
-class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UISearchBarDelegate {
+class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UISearchBarDelegate, UIGestureRecognizerDelegate {
 
     @IBOutlet weak var pageControl: UIPageControl!
     @IBOutlet weak var movieCollectionView: UICollectionView!
@@ -26,11 +26,25 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
+        // set datasource, delegate for tableview
+        self.movieTableView.delegate = self
+        self.movieTableView.dataSource = self
+        // set datasource, delegate for collectionview
+        self.movieCollectionView.delegate = self
+        self.movieCollectionView.dataSource = self
+        
         self.currentPage = 1
         self.isLoading = false
         
         // set page control (page 1 is init page)
         self.pageControl.currentPage = 1
+        
+        let lpgr = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress(gestureReconizer:)))
+        lpgr.minimumPressDuration = 0.5
+        lpgr.delaysTouchesBegan = true
+        lpgr.delegate = self
+        self.movieCollectionView.addGestureRecognizer(lpgr)
         
         // Initialize a UIRefreshControl
         let refreshControlCollection = UIRefreshControl()
@@ -52,14 +66,48 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         // show progress hub
         MBProgressHUD.showAdded(to: self.view, animated: true)
 
-        // set datasource, delegate for tableview
-        self.movieTableView.delegate = self
-        self.movieTableView.dataSource = self
-        // set datasource, delegate for collectionview
-        self.movieCollectionView.delegate = self
-        self.movieCollectionView.dataSource = self
         
         loadDataFrom(handleStopProcess: nil)
+    }
+    
+    var isPopover = false
+    func handleLongPress(gestureReconizer: UILongPressGestureRecognizer) {
+
+        
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let detailViewController = storyboard.instantiateViewController(withIdentifier: "detailViewController") as! MovieDetailViewController
+        
+       
+        
+        let p = gestureReconizer.location(in: self.movieCollectionView)
+        let indexPath = self.movieCollectionView.indexPathForItem(at: p)
+        
+        
+        if gestureReconizer.state != UIGestureRecognizerState.ended {
+            if isPopover == false {
+                if let index = indexPath {
+                    //var cell = self.movieCollectionView.cellForItem(at: index)
+                    // do stuff with your cell, for example print the indexPath
+                    
+                    detailViewController.modalPresentationStyle = .overFullScreen;
+                    //detailViewController.modalTransitionStyle = .flipHorizontal;
+                    detailViewController.movie = moviesSearchArray[index.row]
+                    detailViewController.view.backgroundColor = UIColor.clear
+                    
+                    isPopover = true
+                    self.present(detailViewController, animated: true, completion: nil)
+                    
+                } else {
+                    print("aaaa Could not find index path")
+                }
+            }
+            return
+        }
+
+        if isPopover == true {
+            isPopover = false
+        }
+
     }
     
     override func viewWillAppear(_ animated: Bool) {

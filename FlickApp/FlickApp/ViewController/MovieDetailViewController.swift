@@ -24,6 +24,7 @@ class MovieDetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
 
         // set color for back item
         self.navigationController?.navigationBar.tintColor = UIColor.black
@@ -48,6 +49,11 @@ class MovieDetailViewController: UIViewController {
             
             self.dateLabel.text = dateFormatter.string(from: date!)
         }
+    }
+    
+    @IBAction func dismissViewController(_ sender: AnyObject) {
+        
+        self.dismiss(animated: true, completion: nil)
     }
 
     override func didReceiveMemoryWarning() {

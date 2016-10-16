@@ -27,6 +27,7 @@ The following **optional** features are implemented:
 The following **additional** features are implemented:
 
 - [X] Load more data when scroll end.
+- [X] Quick show detail view when long tap on cell of collection view. Pan to back.
 - [X] Use Autolayout.
 
 ## Video Walkthrough
